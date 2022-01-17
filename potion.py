@@ -3,7 +3,8 @@ from typing import List
 
 class Potion:
 
-	def __init__(self, capacity: int, contents: List[chr]):
+	def __init__(self, index: int, capacity: int, contents: List[chr]):
+		self.index = index
 		self._capacity = capacity
 		self._contents = contents
 
@@ -45,14 +46,14 @@ class Potion:
 		return len(self._contents)
 
 	def pour_into(self, other):
-		from pourAction import PourAction
-		pour = PourAction(self, other)
+		pour_count = 0
 		while True:
 			if self.is_empty() or not other.can_push_liquid(self.peek_liquid()):
 				break
-			pour.add_poured_liquid(self.peek_liquid())
 			other.push_liquid(self.pop_liquid())
-		return pour if not pour.is_empty else None
+			pour_count += 1
+		from pourAction import PourAction
+		return PourAction(self.index, other.index, pour_count) if pour_count > 0 else None
 
 	def __repr__(self):
 		contents_str = "".join(self._contents)

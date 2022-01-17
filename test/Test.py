@@ -1,5 +1,5 @@
 import unittest
-import potionParser as pp
+import potionParse as pp
 
 
 class PotionTest(unittest.TestCase):
@@ -17,16 +17,18 @@ class PotionTest(unittest.TestCase):
 	def test_mix_two_single_liquid_potions(self):
 		p1 = pp.parse_potion("a#")
 		p2 = pp.parse_potion("a#")
-		p1.pour_into(p2)
+		pour = p1.pour_into(p2)
 		self.assertTrue(p1.is_empty())
 		self.assertTrue(p2.is_full())
+		self.assertTrue(1, pour.liquid_count)
 
 	def test_pour_multiple_liquids(self):
 		p1 = pp.parse_potion("aa#")
 		p2 = pp.parse_potion("a##")
-		p1.pour_into(p2)
+		pour = p1.pour_into(p2)
 		self.assertTrue(p1.is_empty())
 		self.assertTrue(p2.is_full())
+		self.assertTrue(2, pour.liquid_count)
 
 	def test_mix_unequal_liquids(self):
 		p1 = pp.parse_potion("a#")
