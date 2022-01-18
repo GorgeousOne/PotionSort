@@ -12,9 +12,18 @@ def parse_potion_file(file_path: str) -> List[Potion]:
 	first_capacity = potions[0].get_capacity()
 	if not all(p.get_capacity() == first_capacity for p in potions):
 		raise ValueError("Not all potions have capacity " + str(first_capacity))
-	if not all(first_capacity == count for count in count_liquids(potions).values()):
+
+	liquid_counts = count_liquids(potions)
+	if not all(first_capacity == count for count in liquid_counts.values()):
+		print_inequalities(liquid_counts, first_capacity)
 		raise ValueError("Not all liquids are present " + str(first_capacity) + " times")
 	return potions
+
+
+def print_inequalities(liquids: Dict[chr, int], required_count):
+	for k, v in liquids.items():
+		if v != required_count:
+			print(k, "appears", v - required_count, "x too often")
 
 
 def count_liquids(pots: List[Potion]) -> Dict[chr, int]:

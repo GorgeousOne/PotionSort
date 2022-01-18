@@ -9,8 +9,8 @@ import potionParse as pp
 
 def display_solution(pots: List[Potion], pours: List[PourAction], use_colors: bool = True):
 	display_potions(pots, use_colors)
-	for pour in pours:
-		print("-" * (len(pots) * 7 - 4))
+	for i, pour in enumerate(pours):
+		print("-" * (len(pots) * 7 - 4), i)
 		display_pour(pots, pour, use_colors)
 		print()
 		apply_pour(pots, pour)
@@ -73,7 +73,7 @@ colors = {
 	"l": "#72CF73",
 	"g": "#388122",
 	"s": "#51B4E7",
-	"b": "#4E73E1",
+	"b": "#0000ff",  # originally "#4E73E1" but in console it looks like purple
 	"p": "#945ABB",
 	"w": "#96735A",
 	"e": "#999999",
@@ -91,7 +91,7 @@ def apply_pour(pots: List[Potion], pour: PourAction):
 	pot_from = pots[pour.fromIndex]
 	pot_to = pots[pour.toIndex]
 	for i in range(pour.liquid_count):
-		pot_to.push_liquid(pot_from.pop_liquid())
+		pot_to._push_liquid(pot_from._pop_liquid())
 
 
 if __name__ == '__main__':

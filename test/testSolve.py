@@ -21,3 +21,11 @@ class SolveTest(unittest.TestCase):
 		pot2 = pp.parse_potion("abc")
 		liquids = ps.sort_liquids_by_max_index([pot1, pot2])
 		self.assertEqual(["c", "b", "a"], liquids)
+
+	def test_find_almost_pure_pots(self):
+		pot1 = pp.parse_potion("aab", 0)
+		pot2 = pp.parse_potion("ab#", 1)
+		pot3 = pp.parse_potion("a##", 2)
+
+		liquids = ps.find_almost_pure_pots([pot1, pot2, pot3])
+		self.assertEqual([0, 1], liquids)

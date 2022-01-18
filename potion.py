@@ -11,21 +11,35 @@ class Potion:
 	def get_capacity(self) -> int:
 		return self._capacity
 
-	def can_push_liquid(self, liquid: chr, amount: int = 1) -> bool:
-		if self._capacity - self.get_level() < amount:
-			return False
-		return self.is_empty() or liquid == self.peek_liquid()
+	def get_liquids(self) -> List[chr]:
+		return self._liquids
 
-	def push_liquid(self, liquid_char: chr):
-		if not self.can_push_liquid(liquid_char):
-			raise ValueError("Cannot add liquid " + liquid_char + " to potion " + str(self))
-		self._liquids.append(liquid_char)
+	def get_level(self) -> int:
+		return len(self._liquids)
+
+	def is_full(self) -> bool:
+		return len(self._liquids) >= self._capacity
+
+	def is_empty(self) -> bool:
+		return not bool(self._liquids)
+
+	def is_pure(self) -> bool:
+		return not self.is_empty() and all(l == self._liquids[0] for l in self._liquids)
 
 	def get_liquid(self, index: int) -> chr:
 		return self._liquids[index] if index < len(self._liquids) else None
 
-	def pop_liquid(self) -> chr:
+	def _pop_liquid(self) -> chr:
+		if self.is_empty():
+			return None
 		return self._liquids.pop()
+
+	def _push_liquid(self, liquid: chr):
+		if self.is_full():
+			raise ValueError("Potions is full")
+		if not (self.is_empty() or self.peek_liquid() == liquid):
+			raise ValueError(str(self) + " Cannot add liquid " + liquid + " on top of " + self.peek_liquid())
+		self._liquids.append(liquid)
 
 	def peek_liquid(self) -> chr:
 		if self._liquids:
@@ -42,31 +56,23 @@ class Potion:
 				return -(i + 1)
 		return self.get_level()
 
-	def is_full(self) -> bool:
-		return len(self._liquids) >= self._capacity
 
-	def is_empty(self) -> bool:
-		return not bool(self._liquids)
-
-	def is_pure(self) -> bool:
-		return not self.is_empty() and all(l == self._liquids[0] for l in self._liquids)
-
-	def get_level(self) -> int:
-		return len(self._liquids)
+	def can_be_poured_into(self, other) -> bool:
+		if other.get_capacity() - other.get_level() < self.peek_liquid_depth():
+			return False
+		return other.is_empty() or self.peek_liquid() == other.peek_liquid()
 
 	def pour_into(self, other):
-		pour_count = 0
-		while True:
-			if self.is_empty() or not other.can_push_liquid(self.peek_liquid()):
-				break
-			other.push_liquid(self.pop_liquid())
-			pour_count += 1
+		if other is self:
+			raise ValueError("Cannot pour potion into itself")
+		if not self.can_be_poured_into(other):
+			return None
+		pour_count = self.peek_liquid_depth()
+		for i in range(pour_count):
+			other._push_liquid(self._pop_liquid())
 		from pourAction import PourAction
-		return PourAction(self.index, other.index, pour_count) if pour_count > 0 else None
+		return PourAction(self.index, other.index, pour_count)
 
 	def __repr__(self):
 		contents_str = "".join(self._liquids)
 		return "[" + contents_str.ljust(self._capacity) + "]"
-
-	def get_liquids(self) -> List[chr]:
-		return self._liquids
