@@ -38,4 +38,13 @@ class PotionTest(unittest.TestCase):
 		self.assertEqual(1, p1.get_level())
 		self.assertEqual(1, p2.get_level())
 
+	def test_potion_peek_depth(self):
+		p1 = pp.parse_potion("baaa#")
+		self.assertEqual(3, p1.peek_liquid_depth())
+		p2 = pp.parse_potion("bbbb#")
+		self.assertEqual(4, p2.peek_liquid_depth())
 
+	def test_potion_overpour(self):
+		p1 = pp.parse_potion("a##")
+		p2 = pp.parse_potion("aaa")
+		self.assertFalse(p2.can_push_liquid(p1), p1.peek_liquid_depth())

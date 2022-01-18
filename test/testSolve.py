@@ -2,6 +2,7 @@ import unittest
 import potionParse as pp
 import puzzleSolve as ps
 
+
 class SolveTest(unittest.TestCase):
 
 	def test_is_puzzle_solved(self):

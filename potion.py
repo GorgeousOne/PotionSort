@@ -11,8 +11,8 @@ class Potion:
 	def get_capacity(self) -> int:
 		return self._capacity
 
-	def can_push_liquid(self, liquid: chr) -> bool:
-		if self.is_full():
+	def can_push_liquid(self, liquid: chr, amount: int = 1) -> bool:
+		if self._capacity - self.get_level() < amount:
 			return False
 		return self.is_empty() or liquid == self.peek_liquid()
 
@@ -32,6 +32,15 @@ class Potion:
 			return self._liquids[-1]
 		else:
 			return None
+
+	def peek_liquid_depth(self) -> int:
+		if not self._liquids:
+			return 0
+		peek = self.peek_liquid()
+		for i in range(-2, -(self.get_level() + 1), -1):
+			if self.get_liquid(i) != peek:
+				return -(i + 1)
+		return self.get_level()
 
 	def is_full(self) -> bool:
 		return len(self._liquids) >= self._capacity

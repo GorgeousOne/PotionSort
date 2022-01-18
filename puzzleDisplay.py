@@ -14,7 +14,7 @@ def display_solution(pots: List[Potion], pours: List[PourAction], use_colors: bo
 		display_pour(pots, pour, use_colors)
 		print()
 		apply_pour(pots, pour)
-		display_potions(pots, use_colors)
+	display_potions(pots, use_colors)
 
 
 def display_potions(pots: List[Potion], use_colors: bool = True):
