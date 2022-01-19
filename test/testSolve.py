@@ -1,6 +1,5 @@
 import unittest
-import potionParse as pp
-import puzzleSolve as ps
+from solve import puzzleSolve as ps, potionParse as pp
 
 
 class SolveTest(unittest.TestCase):

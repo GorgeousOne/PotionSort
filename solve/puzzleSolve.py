@@ -1,8 +1,8 @@
 from copy import deepcopy
 from typing import List
 
-from potion import Potion
-from pourAction import PourAction
+from solve.potion import Potion
+from solve.pourAction import PourAction
 
 
 def find_pour_solution(pots: List[Potion], pours=None, pot_index_from: int = None, pot_index_to: int = None) -> List[PourAction]:

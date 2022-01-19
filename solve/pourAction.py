@@ -1,6 +1,3 @@
-from potion import Potion
-
-
 class PourAction:
 
 	def __init__(self, from_index: int, to_index: int, liquid_count: int):
