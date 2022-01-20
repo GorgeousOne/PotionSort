@@ -1,12 +1,13 @@
 # PotionSort
 
-A silly python program to that solves puzzles for the game mobile [SortPuz](https://apps.apple.com/us/app/sortpuz-water-puzzles-games/id1560298214).  
-It can take a screenshot of a level as input, analyze the displayed puzzle and present a step by step solution as a command line output.
+A silly python program to that solves puzzles of the mobile game [SortPuz](https://apps.apple.com/us/app/sortpuz-water-puzzles-games/id1560298214).  
+It can take a screenshot of a game level as input, analyze the displayed puzzle and present a step by step solution as command line output.
 
 By the time you managed to run the program you probably already solved every puzzle.
 
 ![first puzzle of the game](data/img_00.PNG)
 
+The command line output shows how to pour the colored fluids from flask to flask in order to unmix all colors.
 ![example solution](data/example.jpg)
 
 ## Installation
