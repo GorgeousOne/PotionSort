@@ -43,12 +43,14 @@ def find_potions(img, contours):
 		potion_liquids.append(liquids)
 
 	liquids_unit = calculate_liquid_unit([liquid[1] for liquid in all_liquids])
-	max_capacity = find_max_capacity(potion_liquids, liquids_unit)
+	x, y, w, h = cv.boundingRect(contours[0])
+	max_capacity = math.floor(h / liquids_unit)
 
 	for i, liquids in enumerate(potion_liquids):
 		liquids.reverse()
 		potions.append(create_potion(liquids, liquids_unit, max_capacity, i))
 	return potions
+
 
 def compare_y_x(cnt1, cnt2):
 	x1, y1, w1, h1 = cv.boundingRect(cnt1)
@@ -87,9 +89,6 @@ def calculate_liquid_unit(sizes):
 			singles.append(elem / count)
 	return np.mean(singles)
 
-
-def find_max_capacity(potion_liquids, liquid_unit):
-	return max([sum(round(liquid[1] / liquid_unit) for liquid in potion) for potion in potion_liquids])
 
 
 def find_potion_colors(img_potion) -> List[Tuple[chr, int]]:
@@ -151,7 +150,6 @@ def detect_potions(image_path: str):
 	aspect = image.shape[1] / image.shape[0]
 
 	image = cv.resize(image, (int(1000 * aspect), 1000), interpolation=cv.INTER_AREA)
-	img_h = image.shape[0]
 	img_w = image.shape[1]
 
 	blur = cv.bilateralFilter(image, 9, 75, 75)
