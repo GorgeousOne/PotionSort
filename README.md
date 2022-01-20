@@ -4,9 +4,9 @@ A silly python program to that solves puzzles for the game mobile [SortPuz](http
 
 It can take a screenshot of a level as input, analyze the displayed puzzle and present a step by step solution as a command line output.
 
-![example image with 2 sets](data/img_00.png)
+![first puzzle of the game](data/img_00.PNG)
 
-![example image with 2 sets](data/example.jpg)
+![example solution](data/example.jpg)
 
 ## Installation
 
