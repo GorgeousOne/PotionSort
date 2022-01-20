@@ -2,9 +2,9 @@ from copy import deepcopy
 from typing import List
 from colored import fg, attr
 
-from potion import Potion
-from pourAction import PourAction
-import potionParse as pp
+from solve.potion import Potion
+from solve.pourAction import PourAction
+from solve import potionParse as pp
 
 
 def display_solution(pots: List[Potion], pours: List[PourAction], use_colors: bool = True):
@@ -95,7 +95,7 @@ def apply_pour(pots: List[Potion], pour: PourAction):
 
 
 if __name__ == '__main__':
-	potions = pp.parse_potion_file("res/puzzle04.txt")
+	potions = pp.parse_potion_file("data/puzzle04.txt")
 
 	test = deepcopy(potions)
 	pours = [test[0].pour_into(test[3]), test[2].pour_into(test[0])]

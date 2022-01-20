@@ -1,6 +1,6 @@
 from typing import List
 from typing import Dict
-from potion import Potion
+from solve.potion import Potion
 
 
 def parse_potion_file(file_path: str) -> List[Potion]:

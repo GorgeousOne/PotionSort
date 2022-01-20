@@ -70,9 +70,9 @@ class Potion:
 		pour_count = self.peek_liquid_depth()
 		for i in range(pour_count):
 			other._push_liquid(self._pop_liquid())
-		from pourAction import PourAction
+		from solve.pourAction import PourAction
 		return PourAction(self.index, other.index, pour_count)
 
 	def __repr__(self):
 		contents_str = "".join(self._liquids)
-		return "[" + contents_str.ljust(self._capacity) + "]"
+		return "#" + str(self.index) + " [" + contents_str.ljust(self._capacity) + "]"
