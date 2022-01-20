@@ -75,4 +75,4 @@ class Potion:
 
 	def __repr__(self):
 		contents_str = "".join(self._liquids)
-		return "[" + contents_str.ljust(self._capacity) + "]"
+		return "#" + str(self.index) + " [" + contents_str.ljust(self._capacity) + "]"

@@ -6,6 +6,7 @@ from solve.pourAction import PourAction
 
 
 def find_pour_solution(pots: List[Potion], pours=None, pot_index_from: int = None, pot_index_to: int = None) -> List[PourAction]:
+	print("here we go", pots)
 	if not pours:
 		pours = []
 	pots = deepcopy(pots)
@@ -74,4 +75,5 @@ def sort_liquids_by_max_index(pots: List[Potion]) -> List[chr]:
 
 
 def is_puzzle_solved(pots: List[Potion]):
+	print(pots)
 	return all(pot.is_full() and pot.is_pure() or pot.is_empty() for pot in pots)
