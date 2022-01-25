@@ -56,11 +56,14 @@ class Potion:
 				return -(i + 1)
 		return self.get_level()
 
-
 	def can_be_poured_into(self, other) -> bool:
-		if other.get_capacity() - other.get_level() < self.peek_liquid_depth():
+		if other is self:
 			return False
-		return other.is_empty() or self.peek_liquid() == other.peek_liquid()
+		if other.is_empty():
+			return True
+		if self.peek_liquid() != other.peek_liquid():
+			return False
+		return other.get_capacity() - other.get_level() >= self.peek_liquid_depth()
 
 	def pour_into(self, other):
 		if other is self:

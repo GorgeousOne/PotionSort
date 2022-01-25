@@ -1,46 +1,65 @@
 from copy import deepcopy
-from typing import List
+from typing import List, Tuple
 
 from solve.potion import Potion
 from solve.pourAction import PourAction
+from solve import puzzleDisplay as pd
+
+counter = 0
+original = None
 
 
-def find_pour_solution(pots: List[Potion], pours=None, pot_index_from: int = None, pot_index_to: int = None) -> List[PourAction]:
+def find_pour_solution(pots: List[Potion], pours=None, pour_indices: Tuple[int, int] = None, last_pour_indices: Tuple[int, int] = None) -> List[PourAction]:
+	global counter
+	global original
+
 	if not pours:
+		original = deepcopy(pots)
 		pours = []
-	pots = deepcopy(pots)
-	pours = deepcopy(pours)
 
-	if pot_index_from is not None and pot_index_to is not None:
-		pours.append(pots[pot_index_from].pour_into(pots[pot_index_to]))
+	if pour_indices is not None:
+		# if pour_indices[::-1] == last_pour_indices:
+		# 	return None
+		# if pots[pour_indices[0]].is_pure() and pots[pour_indices[1]].is_pure() and pour_indices[0] > pour_indices[1]:
+		# 	return None
+		pots = deepcopy(pots)
+		pours = deepcopy(pours)
+		pours.append(pots[pour_indices[0]].pour_into(pots[pour_indices[1]]))
+
 	if is_puzzle_solved(pots):
-		return pours
+		counter += 1
+		if counter % 1000 == 0:
+			print(counter)
+		return None
+		# return pours
 	liquids = sort_liquids_by_max_index(pots)
 
 	# fill liquids into already pure potions
 	for pure_index in find_pure_unfull_pots(pots):
 		l = pots[pure_index].peek_liquid()
-		for pot_index in find_pots_with_top_liquid(pots, l, True):
+		for pot_index in find_pots_with_top_liquid(pots, l):
 			if not pots[pot_index].can_be_poured_into(pots[pure_index]):
 				continue
-			result = find_pour_solution(pots, pours, pot_index, pure_index)
+			result = find_pour_solution(pots, pours, (pot_index, pure_index), pour_indices)
 			if result:
 				return result
 	# fill empty flasks
 	for empty_index in find_empty_pots(pots):
 		for l in liquids:
 			for pot_index in find_pots_with_top_liquid(pots, l, True):
-				result = find_pour_solution(pots, pours, pot_index, empty_index)
+				result = find_pour_solution(pots, pours, (pot_index, empty_index), pour_indices)
 				if result:
 					return result
-	# decant any potion into any (brute force)
+	# decant any potion into any other (brute force)
 	for l in liquids:
 		pot_indices = find_pots_with_top_liquid(pots, l)
-		for i in pot_indices:
-			for i2 in pot_indices:
-				if i == i2 or not pots[i].can_be_poured_into(pots[i2]):
+		for i2 in pot_indices:
+			if pots[i2].is_empty() or pots[i2].is_pure():
+				continue
+			for i in pot_indices:
+				if not pots[i].can_be_poured_into(pots[i2]):
 					continue
-				result = find_pour_solution(pots, pours, i, i2)
+				result = find_pour_solution(pots, pours, (i, i2), pour_indices)
 				if result:
 					return result
 	return None
